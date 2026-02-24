@@ -72,22 +72,22 @@ def run_shell_command(cmd: List[str], cwd: Path, description: str = "Running com
 project_root =  Path(__file__).resolve().parent
 
 
-def step1_copy_and_convert_smplh(args, motion_list: List[str]) -> int:
-    """Copy SMPLH files to temp dir and convert to proto format."""
+def step1_copy_and_convert_smpl(args, motion_list: List[str]) -> int:
+    """Copy SMPL files to temp dir and convert to proto format."""
     print("\n" + "="*60)
-    print("STEP 1: Copy SMPLH files and convert to ProtoMotions format")
+    print("STEP 1: Copy SMPL files and convert to ProtoMotions format")
     print("="*60)
 
     # Create temp directory structure
-    temp_smplh_dir = Path(args.output_path) / 'temp_smplh'
+    temp_smpl_dir = Path(args.output_path) / 'temp_smpl'
 
-    temp_smplh_dir.mkdir(parents=True, exist_ok=True)
+    temp_smpl_dir.mkdir(parents=True, exist_ok=True)
 
-    # Copy SMPLH files preserving directory structure
+    # Copy SMPL files preserving directory structure
     copied = 0
-    for motion_path in tqdm(motion_list, desc="Copying SMPLH files"):
-        src = Path(args.smplh_path) / motion_path
-        dst = temp_smplh_dir / motion_path
+    for motion_path in tqdm(motion_list, desc="Copying SMPL files"):
+        src = Path(args.smpl_path) / motion_path
+        dst = temp_smpl_dir / motion_path
 
         dst.parent.mkdir(parents=True, exist_ok=True)
 
@@ -100,20 +100,20 @@ def step1_copy_and_convert_smplh(args, motion_list: List[str]) -> int:
         else:
             print(f"Warning: File not found: {src}")
 
-    print(f"Copied {copied}/{len(motion_list)} SMPLH files")
+    print(f"Copied {copied}/{len(motion_list)} SMPL files")
 
     # Run conversion - convert_amass_to_proto outputs alongside input files
     script = project_root / 'data' / "scripts" / "convert_amass_to_proto.py"
 
     cmd = [
         sys.executable, str(script),
-        str(temp_smplh_dir),  # positional: AMASS_ROOT_DIR
+        str(temp_smpl_dir),  # positional: AMASS_ROOT_DIR
         "--humanoid-type", "smpl",
         "--output-fps", "30",
     ]
-    return run_command(cmd, project_root, "Converting SMPLH to ProtoMotions format")
+    return run_command(cmd, project_root, "Converting SMPL to ProtoMotions format")
 
-def step2_package_smplh_for_retargeting(args, motion_list: List[str]) -> Tuple[int, Path]:
+def step2_package_smpl_for_retargeting(args, motion_list: List[str]) -> Tuple[int, Path]:
     """Package proto files into .pt for retargeting."""
     print("\n" + "="*60)
     print("STEP 2: Package proto for retargeting")
@@ -121,13 +121,13 @@ def step2_package_smplh_for_retargeting(args, motion_list: List[str]) -> Tuple[i
 
     # Generate YAML pointing to proto files
     # Note: convert_amass_to_proto creates .motion files in the same directory as .npz
-    temp_yaml = Path(args.output_path) / "_temp_smplh_retarget.yaml"
-    temp_smplh_dir = Path(args.output_path) / 'temp_smplh'
+    temp_yaml = Path(args.output_path) / "_temp_smpl_retarget.yaml"
+    temp_smpl_dir = Path(args.output_path) / 'temp_smpl'
     motions = []
     for motion_path in tqdm(motion_list, desc="Generating retargeting YAML"):
 
         # Proto file path after conversion (same dir as npz)
-        proto_path = temp_smplh_dir / motion_path
+        proto_path = temp_smpl_dir / motion_path
         proto_path = proto_path.parent / proto_path.name.replace(".npz", ".motion")
         proto_path = proto_path.parent / proto_path.name.replace("-", "_").replace(" ", "_").replace("(", "_").replace(")", "_")
 
@@ -150,7 +150,7 @@ def step2_package_smplh_for_retargeting(args, motion_list: List[str]) -> Tuple[i
 
     script = project_root / "protomotions" / "components" / "motion_lib.py"
 
-    output_file = Path(args.output_path) / "smplh_for_retargeting.pt"
+    output_file = Path(args.output_path) / "smpl_for_retargeting.pt"
 
     cmd = [
         sys.executable, str(script),
@@ -168,7 +168,7 @@ def step2_package_smplh_for_retargeting(args, motion_list: List[str]) -> Tuple[i
 
     return 0, output_file
 
-def step3_run_retarget_shell(args, smplh_pt: Path) -> int:
+def step3_run_retarget_shell(args, smpl_pt: Path) -> int:
     """Run the retarget_amass_to_robot.sh shell script."""
     print("\n" + "="*60)
     print("STEP 3: Run Protomotion Retargeting (via shell script)")
@@ -220,7 +220,7 @@ def step3_run_retarget_shell(args, smplh_pt: Path) -> int:
         str(script),
         str(proto_py),
         str(pyroki_py),
-        str(smplh_pt),
+        str(smpl_pt),
         str(args.output_path),
         'g1',
     ]
@@ -241,7 +241,7 @@ def create_parser():
         help="Path to save the results",
     )
     parser.add_argument(
-        "--smplh-path",
+        "--smpl-path",
         type=str,
         default='/mnt/Exp_HDD/dataset/amass_smplh_g_unzip',
     )
@@ -271,8 +271,8 @@ def main():
     parser = create_parser()
     args = parser.parse_args()
     motion_list = load_motion_list(args.motion_list)
-    step1_copy_and_convert_smplh(args, motion_list)
-    _, file = step2_package_smplh_for_retargeting(args, motion_list)
+    step1_copy_and_convert_smpl(args, motion_list)
+    _, file = step2_package_smpl_for_retargeting(args, motion_list)
     step3_run_retarget_shell(args, file)
 
 
