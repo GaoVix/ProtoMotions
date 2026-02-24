@@ -29,10 +29,12 @@ WORKDIR /app
 
 COPY . /app
 
-WORKDIR /app
-
 RUN python3.8 -m pip install --no-cache-dir -e .
 RUN python3.8 -m pip install -r requirements_isaacgym.txt
 
+RUN python3.10 -m pip install -e pyroki-main
+
 # Expose all GPUs inside the container by default
 ENV NVIDIA_VISIBLE_DEVICES=all NVIDIA_DRIVER_CAPABILITIES=all
+
+CMD [ "bash" ]
