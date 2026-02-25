@@ -242,6 +242,48 @@ def step3_run_retarget_shell(args, smplx_pt: Path) -> int:
 
     return run_shell_command(cmd, project_root, "Running retargeting")
 
+def step5_package_final(args, motion_list: List[str]) -> Tuple[int, Path, Path]:
+        """Package both to .pt files with unified ordering."""
+        print("\n" + "="*60)
+        print("STEP 5: Package to .pt files with unified ordering")
+        print("="*60)
+
+        # Generate Protomotion YAML (from retargeted output)
+        temp_proto_yaml = Path(args.output_path) / "_temp_proto_final.yaml"
+
+        proto_motions = []
+        for motion_path in tqdm(motion_list, desc="Generating final Proto YAML"):
+            motion_path = smpl_to_smplx(motion_path).replace('_poses.', '_stageii.').replace(".npy", ".pkl").replace(".pkl", ".npz").replace(' ', '_')
+            p = Path(motion_path)
+            motion_key = Path(*p.parts[-2:]) 
+            motion_key = str(motion_key).replace(' ', '_').replace('.npz', '_keypoints_retargeted').replace('-', '_').replace('/', '_' )
+            proto_file = Path(args.output_path) / f"retargeted_g1_proto" / f"{motion_key}.motion"
+            print(proto_file)
+            print(proto_file.exists())
+            if proto_file.exists():
+                proto_motions.append({
+                    "file": str(proto_file),
+                    "key": motion_path
+                })
+        with open(temp_proto_yaml, 'w') as f:
+            yaml.dump({"motions": proto_motions}, f)
+
+
+        # Package both
+        script = project_root / "protomotions" / "components" / "motion_lib.py"
+
+        proto_output = Path(args.output_path) / f"protomotion_g1.pt"
+
+        # Package Protomotion
+        cmd = [
+            sys.executable, str(script),
+            "--motion-path", str(temp_proto_yaml),
+            "--output-file", str(proto_output),
+            "--device", 'cpu',
+        ]
+
+        result1 = run_command(cmd, project_root, "Packaging final Protomotions .pt")
+        temp_proto_yaml.unlink(missing_ok=True)
 
 def create_parser():
     """Create and configure the argument parser for inference."""
@@ -289,6 +331,7 @@ def main():
     step1_copy_and_convert_smplx(args, motion_list)
     _, file = step2_package_smplx_for_retargeting(args, motion_list)
     step3_run_retarget_shell(args, file)
+    # step5_package_final(args, motion_list)
 
 
 if __name__ == "__main__":

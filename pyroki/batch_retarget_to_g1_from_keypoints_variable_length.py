@@ -35,6 +35,7 @@ import jaxls
 import numpy as onp
 import pyroki as pk
 import yourdfpy
+import csv
 
 G1_LINK_NAMES = None
 N_retarget = 15
@@ -377,6 +378,11 @@ def main():
         default=None,
         help="Directory to save contact labels. Defaults to {keypoints_folder_path}/contacts_variable_length",
     )
+    parser.add_argument(
+        "--time-file",
+        type=str,
+        required=True,
+    )
 
     args = parser.parse_args()
 
@@ -604,55 +610,77 @@ def main():
 
         output_dir = args.output_dir
         os.makedirs(output_dir, exist_ok=True)
+        times = []
+        try:
+            for i, motion_path in enumerate(test_keypoints_paths):
+                print(
+                    f"Processing motion {i+1}/{len(test_keypoints_paths)}: {os.path.basename(motion_path)}"
+                )
 
-        for i, motion_path in enumerate(test_keypoints_paths):
-            print(
-                f"Processing motion {i+1}/{len(test_keypoints_paths)}: {os.path.basename(motion_path)}"
-            )
+                # Check if output already exists and skip if requested
+                base_filename = os.path.splitext(os.path.basename(motion_path))[0]
+                output_filename = f"{base_filename}_retargeted.npz"
+                output_path = os.path.join(output_dir, output_filename)
+                s_time = time.time()
+                if args.skip_existing and os.path.exists(output_path):
+                    print(f"Output file {output_filename} already exists, skipping...")
+                    continue
 
-            # Check if output already exists and skip if requested
-            base_filename = os.path.splitext(os.path.basename(motion_path))[0]
-            output_filename = f"{base_filename}_retargeted.npz"
-            output_path = os.path.join(output_dir, output_filename)
+                (
+                    simplified_keypoints,
+                    keypoint_orientations,
+                    left_foot_contact,
+                    right_foot_contact,
+                    num_timesteps,
+                ) = load_motion_data_variable_length(
+                    motion_path, args.source_type, subsample_factor
+                )
 
-            if args.skip_existing and os.path.exists(output_path):
-                print(f"Output file {output_filename} already exists, skipping...")
-                continue
+                Ts_world_root, joints = solve_retargeting(
+                    robot=robot,
+                    robot_coll=robot_coll,
+                    target_keypoints=simplified_keypoints,
+                    target_orientations=keypoint_orientations,
+                    left_foot_contact=left_foot_contact,
+                    right_foot_contact=right_foot_contact,
+                    g1_joint_retarget_indices=g1_joint_retarget_indices,
+                    g1_retarget_mask=g1_retarget_mask,
+                    weights=weights_dict,
+                    subsample_factor=subsample_factor,
+                )
 
-            (
-                simplified_keypoints,
-                keypoint_orientations,
-                left_foot_contact,
-                right_foot_contact,
-                num_timesteps,
-            ) = load_motion_data_variable_length(
-                motion_path, args.source_type, subsample_factor
-            )
+                # Save results - using actual num_timesteps (no padding to trim)
+                results_to_save = {
+                    "base_frame_pos": onp.array(Ts_world_root.wxyz_xyz[:num_timesteps, 4:]),
+                    "base_frame_wxyz": onp.array(
+                        Ts_world_root.wxyz_xyz[:num_timesteps, :4]
+                    ),
+                    "joint_angles": onp.array(joints[:num_timesteps]),
+                }
 
-            Ts_world_root, joints = solve_retargeting(
-                robot=robot,
-                robot_coll=robot_coll,
-                target_keypoints=simplified_keypoints,
-                target_orientations=keypoint_orientations,
-                left_foot_contact=left_foot_contact,
-                right_foot_contact=right_foot_contact,
-                g1_joint_retarget_indices=g1_joint_retarget_indices,
-                g1_retarget_mask=g1_retarget_mask,
-                weights=weights_dict,
-                subsample_factor=subsample_factor,
-            )
+                onp.savez_compressed(output_path, **results_to_save)
+                print(f"Saved retargeted motion to {output_path}")
+                e_time = time.time()
+                rtgt_time =  e_time - s_time
+                info = [motion_path, rtgt_time]
+                times.append(info)
+                print(info)
+        except Exception as e:
+            print(f"An error occurred: {e}")
+        finally:
+            file_path = args.time_file
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            with open(file_path, mode='w', newline='') as file:
+                writer = csv.writer(file)
 
-            # Save results - using actual num_timesteps (no padding to trim)
-            results_to_save = {
-                "base_frame_pos": onp.array(Ts_world_root.wxyz_xyz[:num_timesteps, 4:]),
-                "base_frame_wxyz": onp.array(
-                    Ts_world_root.wxyz_xyz[:num_timesteps, :4]
-                ),
-                "joint_angles": onp.array(joints[:num_timesteps]),
-            }
+                header = ['Motion', 'Processing Time']
+                writer.writerow(header)
 
-            onp.savez_compressed(output_path, **results_to_save)
-            print(f"Saved retargeted motion to {output_path}")
+                for row in times:
+                    writer.writerow(row)
+
+
+            print(f'Finished, file saved to {file_path}')
 
 
 @jaxls.Cost.create_factory
