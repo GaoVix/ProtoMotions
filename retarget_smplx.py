@@ -28,6 +28,7 @@ from typing import List, Optional, Tuple
 from dataclasses import dataclass
 import yaml
 from tqdm import tqdm
+import csv
 
 
 def load_motion_list(txt_path: Path) -> List[str]:
@@ -96,6 +97,7 @@ def step1_copy_and_convert_smplx(args, motion_list: List[str]) -> int:
     temp_smplx_dir.mkdir(parents=True, exist_ok=True)
 
     # Copy SMPLX files preserving directory structure
+    left_list = []
     copied = 0
     for motion_path in tqdm(motion_list, desc="Copying SMPLX files"):
         motion_path = smpl_to_smplx(motion_path).replace('_poses.', '_stageii.').replace(".npy", ".pkl").replace(".pkl", ".npz").replace(' ', '_')
@@ -112,6 +114,21 @@ def step1_copy_and_convert_smplx(args, motion_list: List[str]) -> int:
             copied += 1
         else:
             print(f"Warning: File not found: {src}")
+            left_list.append(motion_path)
+    
+    file_path = args.left_file
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    with open(file_path, mode='w', newline='') as file:
+        writer = csv.writer(file)
+
+        header = ['Motion']
+        writer.writerow(header)
+
+        for row in left_list:
+            writer.writerow(row)
+
+
+    print(f'File saved to {file_path}')
 
     print(f"Copied {copied}/{len(motion_list)} SMPLX files")
 
@@ -321,6 +338,11 @@ def create_parser():
         "--no-clip",
         default=False,
         action='store_true'
+    )
+    parser.add_argument(
+        "--left-file",
+        type=str,
+        required=True,
     )
     return parser
 
