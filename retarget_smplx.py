@@ -167,6 +167,7 @@ def step2_package_smplx_for_retargeting(args, motion_list: List[str]) -> Tuple[i
                 "key": motion_path
             })
         else:
+            print(f'Warning: Not Found the proto:')
             print(proto_path)
 
     print(f"Found {len(motions)}/{len(motion_list)} proto files")
