@@ -434,56 +434,59 @@ def main(
             os.makedirs(output_dir / relative_path_dir, exist_ok=True)
 
             print(f"Processing {filename}")
-            if filename.suffix == ".npz" and "samp" not in str(filename):
-                motion_data = np.load(filename)
+            try:
+                if filename.suffix == ".npz" and "samp" not in str(filename):
+                    motion_data = np.load(filename)
 
-                # gender = "neutral"      # assume neutral gender with beta = 0
-                pose_aa = motion_data["poses"]
-                amass_trans = motion_data["trans"]
-                if humanoid_type == "smplx":
-                    # Load the fps from the yaml file
-                    fps_yaml_path = Path("data/yaml_files/motion_fps_amassx.yaml")
-                    with open(fps_yaml_path, "r") as f:
-                        fps_dict = yaml.safe_load(f)
+                    # gender = "neutral"      # assume neutral gender with beta = 0
+                    pose_aa = motion_data["poses"]
+                    amass_trans = motion_data["trans"]
+                    if humanoid_type == "smplx":
+                        # Load the fps from the yaml file
+                        fps_yaml_path = Path("data/yaml_files/motion_fps_amassx.yaml")
+                        with open(fps_yaml_path, "r") as f:
+                            fps_dict = yaml.safe_load(f)
 
-                    # Convert filename to match yaml format
-                    yaml_key = (
-                        folder_name
-                        + "/"
-                        + str(
-                            relative_path_dir
-                            / filename.name.replace(".npz", ".motion")
-                            .replace("-", "_")
-                            .replace(" ", "_")
-                            .replace("(", "_")
-                            .replace(")", "_")
+                        # Convert filename to match yaml format
+                        yaml_key = (
+                            folder_name
+                            + "/"
+                            + str(
+                                relative_path_dir
+                                / filename.name.replace(".npz", ".motion")
+                                .replace("-", "_")
+                                .replace(" ", "_")
+                                .replace("(", "_")
+                                .replace(")", "_")
+                            )
                         )
-                    )
 
-                    if yaml_key in fps_dict:
-                        mocap_fr = fps_dict[yaml_key]
-                    elif "mocap_framerate" in motion_data:
-                        mocap_fr = motion_data["mocap_framerate"]
-                    elif "mocap_frame_rate" in motion_data:
-                        mocap_fr = motion_data["mocap_frame_rate"]
+                        if yaml_key in fps_dict:
+                            mocap_fr = fps_dict[yaml_key]
+                        elif "mocap_framerate" in motion_data:
+                            mocap_fr = motion_data["mocap_framerate"]
+                        elif "mocap_frame_rate" in motion_data:
+                            mocap_fr = motion_data["mocap_frame_rate"]
+                        else:
+                            raise Exception(f"FPS not found for {yaml_key}")
                     else:
-                        raise Exception(f"FPS not found for {yaml_key}")
+                        if "mocap_framerate" in motion_data:
+                            mocap_fr = motion_data["mocap_framerate"]
+                        else:
+                            mocap_fr = motion_data["mocap_frame_rate"]
+
+                elif filename.suffix == ".pkl" and "samp" in str(filename):
+                    with open(filename, "rb") as f:
+                        motion_data = pickle.load(f, encoding="latin1")
+
+                    pose_aa = motion_data["pose_est_fullposes"]
+                    amass_trans = motion_data["pose_est_trans"]
+                    mocap_fr = motion_data["mocap_framerate"]
+
                 else:
-                    if "mocap_framerate" in motion_data:
-                        mocap_fr = motion_data["mocap_framerate"]
-                    else:
-                        mocap_fr = motion_data["mocap_frame_rate"]
-
-            elif filename.suffix == ".pkl" and "samp" in str(filename):
-                with open(filename, "rb") as f:
-                    motion_data = pickle.load(f, encoding="latin1")
-
-                pose_aa = motion_data["pose_est_fullposes"]
-                amass_trans = motion_data["pose_est_trans"]
-                mocap_fr = motion_data["mocap_framerate"]
-
-            else:
-                print(f"Skipping {filename} as it is not a valid file")
+                    print(f"Skipping {filename} as it is not a valid file")
+                    continue
+            except Exception as e:
                 continue
 
             mocap_fr = np.round(mocap_fr).astype(int)
