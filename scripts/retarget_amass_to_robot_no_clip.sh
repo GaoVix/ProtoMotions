@@ -111,7 +111,7 @@ if [ "$ROBOT_TYPE" == "g1" ]; then
         --source-type smpl \
         --output-dir "$RETARGETED_DIR" \
         --no-visualize \
-        --time-file "$RETARGETED_DIR/times1.csv" \
+        --time-file "/mnt/projects/protomotions/times1.csv" \
         --skip-existing
 else
     $PYROKI_PYTHON pyroki/batch_retarget_to_h1_2_from_keypoints.py \
@@ -133,7 +133,7 @@ if [ "$ROBOT_TYPE" == "g1" ]; then
         --source-type smpl \
         --save-contacts-only \
         --contacts-dir "$CONTACTS_DIR" \
-        --time-file "$RETARGETED_DIR/times2.csv" \
+        --time-file "/mnt/projects/protomotions/times2.csv" \
         --skip-existing
 else
     $PYROKI_PYTHON pyroki/batch_retarget_to_h1_2_from_keypoints.py \
