@@ -383,7 +383,7 @@ def main():
         type=str,
         required=True,
     )
-
+    begin_time = time.time()
     args = parser.parse_args()
 
     # Directory containing motion data files
@@ -397,6 +397,31 @@ def main():
     if not test_keypoints_paths:
         print(f"No .npy files found in {keypoints_folder_path}. Exiting.")
         return
+
+    # Sort motions by length (shortest first) for better JAX JIT cache utilization
+    print("Sorting motions by sequence length (shortest first)...")
+    motion_lengths = []
+    for motion_path in test_keypoints_paths:
+        try:
+            motion_data = onp.load(motion_path, allow_pickle=True).item()
+            raw_positions = motion_data["positions"]
+            # Account for subsample factor to get effective length
+            length = raw_positions.shape[0]
+            motion_lengths.append((length, motion_path))
+        except Exception as e:
+            print(f"Warning: Could not load {motion_path}: {e}")
+            motion_lengths.append((float('inf'), motion_path))  # Put at end if error
+
+    # Sort by length (shortest first)
+    motion_lengths.sort(key=lambda x: x[0])
+    test_keypoints_paths = [path for length, path in motion_lengths]
+
+    # Print length distribution
+    lengths = [length for length, _ in motion_lengths]
+    print(f"Sorted {len(test_keypoints_paths)} motions by length:")
+    print(f"  Shortest: {min(lengths)} frames")
+    print(f"  Longest: {max(lengths)} frames")
+    print(f"  Median: {sorted(lengths)[len(lengths)//2]} frames")
 
     # Subsample factor
     subsample_factor = args.subsample_factor
@@ -678,6 +703,9 @@ def main():
 
                 for row in times:
                     writer.writerow(row)
+                final_time = time.time()
+                last_row = [final_time - begin_time]
+                writer.writerow(last_row)
 
 
             print(f'Finished, file saved to {file_path}')
