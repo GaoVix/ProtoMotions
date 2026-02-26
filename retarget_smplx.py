@@ -352,6 +352,7 @@ def main():
     args = parser.parse_args()
     motion_list = load_motion_list(args.motion_list)
     step1_copy_and_convert_smplx(args, motion_list)
+    input()
     _, file = step2_package_smplx_for_retargeting(args, motion_list)
     step3_run_retarget_shell(args, file)
     # step5_package_final(args, motion_list)
