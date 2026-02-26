@@ -111,7 +111,7 @@ if [ "$ROBOT_TYPE" == "g1" ]; then
         --source-type smpl \
         --output-dir "$RETARGETED_DIR" \
         --no-visualize \
-        --time-file "$RETARGETED_DIR/times.csv" \
+        --time-file "$RETARGETED_DIR/times1.csv" \
         --skip-existing
 else
     $PYROKI_PYTHON pyroki/batch_retarget_to_h1_2_from_keypoints.py \
