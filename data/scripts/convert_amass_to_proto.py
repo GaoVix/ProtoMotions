@@ -361,7 +361,7 @@ def main(
 
         all_files_in_folder = [
             f
-            for f in Path(data_dir).glob("**/*.[np][pk][lz]")
+            for f in Path(data_dir).rglob("**/*.[np][pk][lz]")
             if (f.name != "shape.npz" and "stagei.npz" not in f.name)
         ]
 
@@ -404,7 +404,7 @@ def main(
 
         files = [
             f
-            for f in Path(data_dir).glob("**/*.[np][pk][lz]")
+            for f in Path(data_dir).rglob("**/*.[np][pk][lz]")
             if (f.name != "shape.npz" and "stagei.npz" not in f.name)
         ]
         print(f"Processing {len(files)} files")

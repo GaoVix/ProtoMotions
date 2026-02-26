@@ -115,7 +115,7 @@ def step1_copy_and_convert_smplx(args, motion_list: List[str]) -> int:
         else:
             print(f"Warning: File not found: {src}")
             left_list.append(motion_path)
-    input()
+
     file_path = args.left_file
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     with open(file_path, mode='w', newline='') as file:
