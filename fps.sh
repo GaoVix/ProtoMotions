@@ -1,8 +1,8 @@
-python3.10 fps.py \
-    --no-clip \
-    --output-path /mnt/projects/protomotions/fps3 \
-    --smpl-path /mnt/projects/dataset/amass \
-    --motion-list /mnt/projects/protomotions/ProtoMotions/lists/b3.txt 
+# python3.10 fps.py \
+#     --no-clip \
+#     --output-path /mnt/projects/protomotions/fps3 \
+#     --smpl-path /mnt/projects/dataset/amass \
+#     --motion-list /mnt/projects/protomotions/ProtoMotions/lists/b3.txt 
 
 python3.10 fps.py \
     --no-clip \
