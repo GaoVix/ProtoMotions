@@ -114,6 +114,7 @@ def step1_copy_and_convert_smplx(args, motion_list: List[str]) -> int:
             copied += 1
         else:
             print(f"Warning: File not found: {src}")
+            raise RuntimeError
             left_list.append(motion_path)
 
     print(f"Copied {copied}/{len(motion_list)} SMPLX files")
