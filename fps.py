@@ -324,10 +324,6 @@ def create_parser():
         default=False,
         action='store_true'
     )
-    parser.add_argument(
-        "--time-file",
-        required=True
-    )
     return parser
 
 def main():
