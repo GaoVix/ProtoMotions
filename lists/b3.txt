@@ -1,0 +1,60 @@
+BioMotionLab_NTroje/rub027/0003_treadmill_jog_poses.npz
+BioMotionLab_NTroje/rub050/0002_treadmill_slow_poses.npz
+KIT/572/dance_waltz12_poses.npz
+BioMotionLab_NTroje/rub053/0001_treadmill_fast_poses.npz
+Eyes_Japan_Dataset/kawaguchi/throw_toss-05-both hands over heavy-kawaguchi_poses.npz
+MPI_mosh/00008/stretches_poses.npz
+HumanEva/S3/Walking_3_poses.npz
+BioMotionLab_NTroje/rub071/0021_catching_and_throwing_poses.npz
+BioMotionLab_NTroje/rub052/0002_treadmill_slow_poses.npz
+BioMotionLab_NTroje/rub054/0000_treadmill_norm_poses.npz
+Eyes_Japan_Dataset/kawaguchi/gesture_etc-20-swing chair-kawaguchi_poses.npz
+BioMotionLab_NTroje/rub055/0001_treadmill_fast_poses.npz
+BioMotionLab_NTroje/rub054/0002_treadmill_slow_poses.npz
+BioMotionLab_NTroje/rub055/0002_treadmill_slow_poses.npz
+KIT/441/PizzaDelivery03_poses.npz
+BioMotionLab_NTroje/rub052/0001_treadmill_fast_poses.npz
+KIT/442/PizzaDelivery03_poses.npz
+BioMotionLab_NTroje/rub054/0003_treadmill_jog_poses.npz
+SFU/0017/0017_WushuKicks001_poses.npz
+BioMotionLab_NTroje/rub057/0002_treadmill_slow_poses.npz
+BioMotionLab_NTroje/rub058/0000_treadmill_norm_poses.npz
+CMU/13/13_15_poses.npz
+CMU/30/30_02_poses.npz
+SOMA/soma_subject1/sit_003_stageii.npz
+BioMotionLab_NTroje/rub041/0027_circle_walk_poses.npz
+BioMotionLab_NTroje/rub050/0003_treadmill_jog_poses.npz
+CMU/36/36_28_poses.npz
+Eyes_Japan_Dataset/kawaguchi/throw_toss-17-pass to back light-kawaguchi_poses.npz
+BioMotionLab_NTroje/rub049/0000_treadmill_norm_poses.npz
+BioMotionLab_NTroje/rub057/0001_treadmill_fast_poses.npz
+BioMotionLab_NTroje/rub034/0031_rom_poses.npz
+BioMotionLab_NTroje/rub055/0000_treadmill_norm_poses.npz
+BioMotionLab_NTroje/rub024/0001_treadmill_fast_poses.npz
+Eyes_Japan_Dataset/aita/throw_toss-03-under-aita_poses.npz
+Eyes_Japan_Dataset/kawaguchi/sitdown_standup-11-one knee drawn up-kawaguchi_poses.npz
+BioMotionLab_NTroje/rub102/0001_treadmill_fast_poses.npz
+BioMotionLab_NTroje/rub047/0002_treadmill_slow_poses.npz
+BioMotionLab_NTroje/rub047/0000_treadmill_norm_poses.npz
+BioMotionLab_NTroje/rub047/0001_treadmill_fast_poses.npz
+DanceDB/20150927_VasoAristeidou/Vasso_Neutral_v2_01_poses.npz
+BioMotionLab_NTroje/rub050/0001_treadmill_fast_poses.npz
+CMU/126/126_12_poses.npz
+CMU/13/13_14_poses.npz
+CMU/49/49_21_poses.npz
+BioMotionLab_NTroje/rub102/0002_treadmill_slow_poses.npz
+MPI_HDM05/mm/HDM_mm_05-02_01_120_poses.npz
+BioMotionLab_NTroje/rub052/0003_treadmill_jog_poses.npz
+BioMotionLab_NTroje/rub080/0027_circle_walk_poses.npz
+BioMotionLab_NTroje/rub049/0001_treadmill_slow_poses.npz
+Eyes_Japan_Dataset/kawaguchi/pose-08-pray buddhismintone-kawaguchi_poses.npz
+BioMotionLab_NTroje/rub098/0021_catching_and_throwing_poses.npz
+TCD_handMocap/ExperimentDatabase/FingerTP_poses.npz
+CMU/144/144_07_poses.npz
+CMU/135/135_11_poses.npz
+BioMotionLab_NTroje/rub058/0001_treadmill_fast_poses.npz
+MPI_HDM05/mm/HDM_mm_08-01_01_120_poses.npz
+BioMotionLab_NTroje/rub062/0001_treadmill_fast_poses.npz
+MPI_HDM05/mm/HDM_mm_02-01_02_120_poses.npz
+BioMotionLab_NTroje/rub057/0000_treadmill_norm_poses.npz
+BioMotionLab_NTroje/rub026/0003_treadmill_jog_poses.npz

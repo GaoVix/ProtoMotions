@@ -425,6 +425,8 @@ def main():
 
     # Subsample factor
     subsample_factor = args.subsample_factor
+    file_path = args.time_file
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
     # Early exit for save-contacts-only mode (skip robot/JAX initialization)
     if args.save_contacts_only:
@@ -687,18 +689,16 @@ def main():
                 print(f"Saved retargeted motion to {output_path}")
                 e_time = time.time()
                 rtgt_time =  e_time - s_time
-                info = [motion_path, rtgt_time]
+                info = [motion_path, simplified_keypoints.shape[0], rtgt_time]
                 times.append(info)
                 print(info)
         except Exception as e:
             print(f"An error occurred: {e}")
         finally:
-            file_path = args.time_file
-            os.makedirs(os.path.dirname(file_path), exist_ok=True)
             with open(file_path, mode='w', newline='') as file:
                 writer = csv.writer(file)
 
-                header = ['Motion', 'Processing Time']
+                header = ['Motion', 'Frames', 'Processing Time']
                 writer.writerow(header)
 
                 for row in times:
