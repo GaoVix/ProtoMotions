@@ -225,7 +225,7 @@ def step3_run_retarget_shell(args, smplx_pt: Path) -> int:
     print(f"Proto Python: {proto_py}")
     print(f"PyRoki Python: {pyroki_py}")
 
-    script = project_root / "scripts" / "retarget_amass_to_robot_no_clip.sh"
+    script = project_root / "scripts" / "fps_retarget.sh"
 
 
     if not os.access(str(script), os.X_OK):
