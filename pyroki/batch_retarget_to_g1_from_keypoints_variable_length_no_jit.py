@@ -39,6 +39,7 @@ import csv
 
 import os
 os.environ["JAX_NO_JIT"] = "1"
+os.environ["JAX_PLATFORMS"] = "gpu"
 
 G1_LINK_NAMES = None
 N_retarget = 15
