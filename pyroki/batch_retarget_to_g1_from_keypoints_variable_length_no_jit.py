@@ -25,6 +25,10 @@ import os
 # Set GPU platform BEFORE importing jax
 os.environ["JAX_PLATFORMS"] = "cuda"  # Use GPU, fall back to CPU if unavailable
 os.environ["JAX_NO_JIT"] = "1"  # Uncomment ONLY if you need debugging (disables GPU acceleration!)
+os.environ['XLA_FLAGS'] = (
+    '--xla_gpu_triton_gemm_any=True '
+    '--xla_gpu_enable_latency_hiding_scheduler=true '
+)
 
 import time
 from typing import Tuple, TypedDict
