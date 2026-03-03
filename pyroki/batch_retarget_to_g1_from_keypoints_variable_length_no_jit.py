@@ -20,10 +20,15 @@ This is a modified version of batch_retarget_to_g1_from_keypoints.py that preser
 the original sequence length of each motion instead of forcing all sequences to a common length.
 """
 
+# IMPORTANT: JAX environment variables must be set BEFORE importing JAX
+import os
+# Set GPU platform BEFORE importing jax
+os.environ["JAX_PLATFORMS"] = "gpu"  # Use GPU, fall back to CPU if unavailable
+os.environ["JAX_NO_JIT"] = "1"  # Uncomment ONLY if you need debugging (disables GPU acceleration!)
+
 import time
 from typing import Tuple, TypedDict
 import glob
-import os
 import argparse
 from pathlib import Path
 
@@ -37,9 +42,11 @@ import pyroki as pk
 import yourdfpy
 import csv
 
-import os
-os.environ["JAX_NO_JIT"] = "1"
-os.environ["JAX_PLATFORMS"] = "gpu"
+print('='*100)
+print("JAX version:", jax.__version__)
+print("Available devices:", jax.devices())
+print("Default backend:", jax.default_backend())
+print('='*100)
 
 G1_LINK_NAMES = None
 N_retarget = 15
