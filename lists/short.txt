@@ -1,0 +1,8 @@
+BioMotionLab_NTroje/rub012/0011_normal_jog3_poses.npz
+CMU/108/108_09_poses.npz
+CMU/124/124_10_poses.npz
+CMU/49/49_04_poses.npz
+TCD_handMocap/ExperimentDatabase/OK_C_poses.npz
+BMLmovi/Subject_25_F_MoSh/Subject_25_F_9_poses.npz
+BMLmovi/Subject_2_F_MoSh/Subject_2_F_1_poses.npz
+BMLmovi/Subject_2_F_MoSh/Subject_2_F_7_poses.npz

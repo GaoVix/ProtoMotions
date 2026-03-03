@@ -4,27 +4,33 @@
 #     --smpl-path /mnt/projects/dataset/amass \
 #     --motion-list /mnt/projects/protomotions/ProtoMotions/lists/b3.txt 
 
-python3.10 fps.py \
-    --no-clip \
-    --output-path /mnt/projects/protomotions/fps2 \
-    --smpl-path /mnt/projects/dataset/amass \
-    --motion-list /mnt/projects/protomotions/ProtoMotions/lists/b2.txt 
+# python3.10 fps.py \
+#     --no-clip \
+#     --output-path /mnt/projects/protomotions/fps2 \
+#     --smpl-path /mnt/projects/dataset/amass \
+#     --motion-list /mnt/projects/protomotions/ProtoMotions/lists/b2.txt 
 
-python3.10 fps.py \
-    --no-clip \
-    --output-path /mnt/projects/protomotions/fps1 \
-    --smpl-path /mnt/projects/dataset/amass \
-    --motion-list /mnt/projects/protomotions/ProtoMotions/lists/b1.txt 
+# python3.10 fps.py \
+#     --no-clip \
+#     --output-path /mnt/projects/protomotions/fps1 \
+#     --smpl-path /mnt/projects/dataset/amass \
+#     --motion-list /mnt/projects/protomotions/ProtoMotions/lists/b1.txt 
 
-python3.10 fps.py \
-    --no-clip \
-    --output-path /mnt/projects/protomotions/fps0 \
-    --smpl-path /mnt/projects/dataset/amass \
-    --motion-list /mnt/projects/protomotions/ProtoMotions/lists/b0.txt 
+# python3.10 fps.py \
+#     --no-clip \
+#     --output-path /mnt/projects/protomotions/fps0 \
+#     --smpl-path /mnt/projects/dataset/amass \
+#     --motion-list /mnt/projects/protomotions/ProtoMotions/lists/b0.txt 
 
 
-python3.10 fps.py \
+# python3.10 fps.py \
+#     --no-clip \
+#     --output-path /mnt/projects/protomotions/supp2 \
+#     --smpl-path /mnt/projects/dataset/amass \
+#     --motion-list /mnt/projects/protomotions/ProtoMotions/lists/supp2.txt 
+
+python3.10 no_jit.py \
     --no-clip \
-    --output-path /mnt/projects/protomotions/supp2 \
+    --output-path /mnt/projects/protomotions/short \
     --smpl-path /mnt/projects/dataset/amass \
-    --motion-list /mnt/projects/protomotions/ProtoMotions/lists/supp2.txt 
+    --motion-list /mnt/projects/protomotions/ProtoMotions/lists/short.txt 
