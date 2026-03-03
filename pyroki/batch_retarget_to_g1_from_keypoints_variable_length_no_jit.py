@@ -22,6 +22,10 @@ the original sequence length of each motion instead of forcing all sequences to 
 
 # IMPORTANT: JAX environment variables must be set BEFORE importing JAX
 import os
+os.environ["JAX_ENABLE_PGLE"] = "true"
+
+# For JAX version <= 0.5.0 make sure to include:
+os.environ["XLA_FLAGS"] = "--xla_gpu_enable_latency_hiding_scheduler=true"
 # Set GPU platform BEFORE importing jax
 # IMPORTANT: Must include "cpu" because JAX debug callbacks need CPU device!
 os.environ["JAX_PLATFORMS"] = "cuda,cpu"  # Use GPU first, CPU as fallback (cpu required for debug callbacks)
