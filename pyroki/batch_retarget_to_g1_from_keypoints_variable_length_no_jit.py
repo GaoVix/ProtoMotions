@@ -23,7 +23,8 @@ the original sequence length of each motion instead of forcing all sequences to 
 # IMPORTANT: JAX environment variables must be set BEFORE importing JAX
 import os
 # Set GPU platform BEFORE importing jax
-os.environ["JAX_PLATFORMS"] = "cuda"  # Use GPU, fall back to CPU if unavailable
+# IMPORTANT: Must include "cpu" because JAX debug callbacks need CPU device!
+os.environ["JAX_PLATFORMS"] = "cuda,cpu"  # Use GPU first, CPU as fallback (cpu required for debug callbacks)
 os.environ["JAX_NO_JIT"] = "1"  # Uncomment ONLY if you need debugging (disables GPU acceleration!)
 os.environ['XLA_FLAGS'] = (
     '--xla_gpu_triton_gemm_any=True '
