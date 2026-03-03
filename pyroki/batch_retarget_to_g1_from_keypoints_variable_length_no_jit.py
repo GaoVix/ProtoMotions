@@ -45,7 +45,7 @@ import csv
 print('='*100)
 print("JAX version:", jax.__version__)
 print("Available devices:", jax.devices())
-print("Default backend:", jax.default_backend())
+# print("Default backend:", jax.default_backend())
 print('='*100)
 
 G1_LINK_NAMES = None
