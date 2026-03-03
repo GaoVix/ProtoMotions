@@ -425,7 +425,11 @@ def main():
 
     # Subsample factor
     subsample_factor = args.subsample_factor
-    file_path = args.time_file
+    file_path = str(args.time_file)
+    i = 1
+    while Path(file_path).exists():
+        file_path = file_path.replace(f"times{i}", f"times{i+1}")
+        i += 1
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
     # Early exit for save-contacts-only mode (skip robot/JAX initialization)
