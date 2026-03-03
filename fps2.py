@@ -143,7 +143,7 @@ def step2_package_smplx_for_retargeting(args, motion_list: List[str]) -> Tuple[i
     for motion_path_o in tqdm(motion_list, desc="Generating retargeting YAML"):
         try:
             output_path = Path(args.output_path) / f'{num}'
-            output_path.parent.mkdir(parents=True, exist_ok=True)
+            output_path.mkdir(parents=True, exist_ok=True)
             # Generate YAML pointing to proto files
             # Note: convert_amass_to_proto creates .motion files in the same directory as .npz
             temp_yaml = output_path / "_temp_smplx_retarget.yaml"
