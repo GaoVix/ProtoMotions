@@ -34,10 +34,11 @@ os.environ['XLA_FLAGS'] = (
     '--xla_gpu_triton_gemm_any=True '
     '--xla_gpu_enable_latency_hiding_scheduler=true '
 )
+# os.environ["XLA_GPU_ENABLE_LATENCY_HIDING_SCHEDULER"] = "True"
 # os.environ['XLA_PYTHON_CLIENT_PREALLOCATE'] = 'false' 
 # os.environ['XLA_PYTHON_CLIENT_MEM_FRACTION'] = '0.8' # 使用 80% 的 GPU 内存
 os.environ['CUDA_VISIBLE_DEVICES'] = '0' # 指定 GPU 设备
-os.environ['XLA_FLAGS'] = '--xla_gpu_enable_triton_gemm=false' # 稳定性
+# os.environ['XLA_FLAGS'] = '--xla_gpu_enable_triton_gemm=false' # 稳定性
 
 import time
 from typing import Tuple, TypedDict
