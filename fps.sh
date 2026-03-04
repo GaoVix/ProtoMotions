@@ -1,3 +1,5 @@
+git pull origin main
+
 # python3.10 fps.py \
 #     --no-clip \
 #     --output-path /mnt/projects/protomotions/fps3 \
