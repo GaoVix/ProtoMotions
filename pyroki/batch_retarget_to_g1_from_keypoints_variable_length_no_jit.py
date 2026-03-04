@@ -687,6 +687,11 @@ def main():
                 ) = load_motion_data_variable_length(
                     motion_path, args.source_type, subsample_factor
                 )
+                print('=' * 60)
+                print('=' * 60)
+                print('Start Retargeting')
+                print('=' * 60)
+                print('=' * 60)
 
                 Ts_world_root, joints = solve_retargeting(
                     robot=robot,
@@ -700,6 +705,12 @@ def main():
                     weights=weights_dict,
                     subsample_factor=subsample_factor,
                 )
+                print('=' * 60)
+                print('=' * 60)
+                print('Finished the  Retargeting')
+                print('=' * 60)
+                print('=' * 60)
+
 
                 # Save results - using actual num_timesteps (no padding to trim)
                 results_to_save = {
