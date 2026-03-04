@@ -25,11 +25,11 @@ import os
 os.environ["JAX_ENABLE_PGLE"] = "true"
 
 # For JAX version <= 0.5.0 make sure to include:
-os.environ["XLA_FLAGS"] = "--xla_gpu_enable_latency_hiding_scheduler=true"
+# os.environ["XLA_FLAGS"] = "--xla_gpu_enable_latency_hiding_scheduler=true"
 # Set GPU platform BEFORE importing jax
 # IMPORTANT: Must include "cpu" because JAX debug callbacks need CPU device!
 os.environ["JAX_PLATFORMS"] = "cuda,cpu"  # Use GPU first, CPU as fallback (cpu required for debug callbacks)
-os.environ["JAX_NO_JIT"] = "1"  # Uncomment ONLY if you need debugging (disables GPU acceleration!)
+# os.environ["JAX_NO_JIT"] = "1"  # Uncomment ONLY if you need debugging (disables GPU acceleration!)
 os.environ['XLA_FLAGS'] = (
     '--xla_gpu_triton_gemm_any=True '
     '--xla_gpu_enable_latency_hiding_scheduler=true '
