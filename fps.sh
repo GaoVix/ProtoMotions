@@ -30,7 +30,7 @@ git pull origin main
 #     --output-path /mnt/projects/protomotions/supp2 \
 #     --smpl-path /mnt/projects/dataset/amass \
 #     --motion-list /mnt/projects/protomotions/ProtoMotions/lists/supp2.txt 
-rm -r /mnt/projects/protomotions/ProtoMotions/short
+rm -r /mnt/projects/protomotions/short/
 
 python3.10 no_jit.py \
     --no-clip \
