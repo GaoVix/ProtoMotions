@@ -1230,7 +1230,9 @@ def solve_retargeting(
                 weights["foot_tilt"],  # Reusing foot_tilt weight for tilt cost
             )
         )
-
+    print('=' * 60)
+    print('Solving the problem...')
+    print('=' * 60)
     solution = (
         jaxls.LeastSquaresProblem(
             costs, [var_joints, var_Ts_world_root, var_joints_scale]
