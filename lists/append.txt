@@ -1,0 +1,1 @@
+Eyes_Japan_Dataset/kawaguchi/turn-05-turn-kawaguchi_poses.npz
